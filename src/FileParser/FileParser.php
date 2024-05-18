@@ -21,6 +21,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\Node\Stmt\Use_;
+use PhpParser\Node\IntersectionType;
 use PhpParser\Node\UnionType;
 use PhpParser\NodeAbstract;
 use PhpParser\Parser;
@@ -35,6 +36,7 @@ class FileParser
      * @var DocblockParser
      */
     private $docblockParser;
+
     /**
      * @var Parser
      */
@@ -173,7 +175,7 @@ class FileParser
                             $paramType
                                 ->addType($type->type->toString())
                                 ->setNullable(true);
-                        } elseif ($type instanceof UnionType) {
+                        } elseif ($type instanceof IntersectionType || $type instanceof UnionType) {
                             foreach ($type->types as $toAdd) {
                                 $paramType->addType($toAdd->toString());
                             }
@@ -181,8 +183,8 @@ class FileParser
                             $paramType->addType($type->toString());
                         }
 
-
-                        if (property_exists($param, 'default') &&
+                        if (
+                            property_exists($param, 'default') &&
                             $param->default instanceof Expr &&
                             property_exists($param->default, 'name') &&
                             property_exists($param->default->name, 'parts') &&
