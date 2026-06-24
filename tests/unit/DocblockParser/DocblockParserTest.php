@@ -15,6 +15,7 @@ class DocblockParserTest extends \PHPUnit\Framework\TestCase
   * @param int \$foo some int
   * @param string \$bar some string
   * @param \DateTimeImmutable \$baz some date
+  * @param string ...$args
   * @return stdClass some class
   */
 EOF;
@@ -39,23 +40,34 @@ EOF;
                 'var' => '$foo',
                 'type' => 'int',
                 'desc' => 'some int',
+                'variadic' => false,
             ],
             [
                 'var' => '$bar',
                 'type' => 'string',
                 'desc' => 'some string',
+                'variadic' => false,
             ],
             [
                 'var' => '$baz',
                 'type' => '\DateTimeImmutable',
                 'desc' => 'some date',
+                'variadic' => false,
             ],
+            [
+                'var' => '$args',
+                'type' => 'string',
+                'desc' => 'some date',
+                'variadic' => true,
+            ],
+
         ];
 
         foreach ($result->getParamTags() as $key => $paramTag) {
             $this->assertEquals($expected[$key]['var'], $paramTag->getVar());
             $this->assertEquals($expected[$key]['type'], $paramTag->getType());
             $this->assertEquals($expected[$key]['desc'], $paramTag->getDesc());
+            $this->assertEquals($expected[$key]['variadic'], $paramTag->isVariadic());
         }
     }
 }

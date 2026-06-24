@@ -92,12 +92,7 @@ class ParamTag extends Tag
     {
         $name = trim($name);
 
-        if (preg_match("/,\.\.\.$/", $name)) {
-            $this->variadic = true;
-            $name = substr($name, 0, -4);
-        }
-
-        if (preg_match("/^\.\.\.\$/", $name)) {
+        if (strpos($name, '...') === 0) {
             $this->variadic = true;
             $name = substr($name, 3);
         }
