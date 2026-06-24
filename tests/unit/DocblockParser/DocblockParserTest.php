@@ -15,7 +15,7 @@ class DocblockParserTest extends \PHPUnit\Framework\TestCase
   * @param int \$foo some int
   * @param string \$bar some string
   * @param \DateTimeImmutable \$baz some date
-  * @param string ...$args
+  * @param string ...\$args
   * @return stdClass some class
   */
 EOF;
@@ -57,7 +57,7 @@ EOF;
             [
                 'var' => '$args',
                 'type' => 'string',
-                'desc' => 'some date',
+                'desc' => '',
                 'variadic' => true,
             ],
 
