@@ -13,6 +13,7 @@ use PhpDocBlockChecker\DocblockParser\ReturnTag;
 use PhpDocBlockChecker\FileInfo;
 use PhpParser\Comment\Doc;
 use PhpParser\Node\Expr;
+use PhpParser\Node\IntersectionType;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Param;
 use PhpParser\Node\Stmt;
@@ -174,7 +175,7 @@ class FileParser
                             $paramType
                                 ->addType($type->type->toString())
                                 ->addType('null');
-                        } elseif ($type instanceof UnionType) {
+                        } elseif ($type instanceof UnionType || $type instanceof IntersectionType) {
                             foreach ($type->types as $toAdd) {
                                 $paramType->addType($toAdd->toString());
                             }
